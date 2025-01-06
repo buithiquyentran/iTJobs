@@ -1,0 +1,42 @@
+.sort-section {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  margin: 16px 0;
+}
+.filter-drop-down {
+  min-width: 260px;
+}
+.searchbar {
+  display: flex;
+  align-items: center;
+  background-color: #c5ccc9;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 73px;
+  margin-left: 0;
+  margin-right: 0;
+}
+.search-btn {
+  height: 100%;
+  border-radius: 0px;
+  font-weight: 600 !important;
+  color: #fff;
+}
+.search-input {
+  flex: 1;
+  padding-left: 16px;
+}
+.company-sort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  border-radius: 8px;
+  padding: 8px 0;
+  background-color: #fff;
+  width: 100%;
+}
+.company-sort-btn {
+  width: 25%;
+}
