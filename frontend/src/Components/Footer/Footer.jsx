@@ -1,5 +1,5 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
-
+import { Box, Container,Grid , Typography } from "@mui/material";
+// import Grid from "@mui/material";
 export default function Footer() {
   return (
     <Box
@@ -13,7 +13,7 @@ export default function Footer() {
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6">ITJOBS</Typography>
+            <Typography variant="h6">IT JOBS</Typography>
             <Typography variant="body2">
               Connecting talent with opportunity.
             </Typography>

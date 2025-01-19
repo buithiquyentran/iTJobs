@@ -1,0 +1,15 @@
+.company-banner {
+  position: relative;
+  height: 50%;
+}
+.company-logo {
+  position: absolute;
+  background-color: #fff;
+  padding: 6px 22px;
+  bottom: -88px;
+  left: 8px;
+  background-color: #fff;
+  object-fit: contain;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+

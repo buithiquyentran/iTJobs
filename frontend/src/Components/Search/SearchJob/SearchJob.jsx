@@ -4,12 +4,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { Chip, Box } from "@mui/material";
-
+import "./SearchJob.css";
 import {
   StyledInputBase,
   CustomFilterDropdown,
 } from "~/Components/Search/Search.styles";
-import "./SearchJob.css";
 
 const keywords = [
   "Java",
@@ -69,7 +68,6 @@ function SearchJob() {
       </Box>
       <Box className="sort-section">
         <CustomFilterDropdown
-          sx={{ minWidth: "190px" }}
           label="Tất cả địa điểm"
           options={addressOptions}
         />

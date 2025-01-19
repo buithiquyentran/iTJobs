@@ -29,6 +29,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            height: 50, // Chiều cao mặc định cho tất cả TextField
+          },
+        },
+      },
+    },
   },
   typography: {
     button: {
@@ -37,6 +46,7 @@ const theme = createTheme({
     fontSize: 16, // Kích thước font mặc định là 16px
     fontFamily: "'Roboto', 'Arial', sans-serif",
   },
+  
 });
 
 export default theme;

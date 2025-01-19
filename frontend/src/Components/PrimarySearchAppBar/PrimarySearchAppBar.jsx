@@ -169,39 +169,76 @@ export default function PrimarySearchAppBar() {
               </Link>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 1 }}>Xin chào Bùi Thị Quyền Trân</Box>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+          {/* Đăng nhập rồi */}
+          <Box sx={{ flexGrow: 1, alignItems: "center" }}>
+            Xin chào Bùi Thị Quyền Trân
           </Box>
+          <Box sx={{ display: "flex" }}>
+            <Box
+              sx={{
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
+              }}
+            >
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+              >
+                <Badge badgeContent={4} color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={17} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+                sx={{marginLeft: 2}}
+              >
+                <AccountCircle />
+              </IconButton>
+            </Box>
+          </Box>
+          {/* Chưa đăng nhập  */}
+          {/* <Box sx={{ display: "flex" }}>
+            <Typography
+              sx={{
+                textTransform: "none",
+                borderRadius: "8px",
+                width: "150px",
+                fontWeight: "bold",
+                marginRight: 1,
+              }}
+            >
+              Đăng nhập
+            </Typography>
+            <Typography
+              sx={{
+                textTransform: "none",
+                borderRadius: "8px",
+                width: "150px",
+                fontWeight: "bold",
+              }}
+            >
+              Đăng ký
+            </Typography>
+          </Box> */}
+          
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
