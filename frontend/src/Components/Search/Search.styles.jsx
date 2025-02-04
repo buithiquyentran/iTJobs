@@ -43,7 +43,7 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function FilterDropdown({ label, options }) {
   const [selected, setSelected] = useState("");
   return (
-    <FormControl variant="outlined" style={{ minWidth: "218px" }}>
+    <FormControl variant="outlined" style={{ minWidth: "256px" }}>
       <InputLabel>{label}</InputLabel>
       <Select
         value={selected}
@@ -65,7 +65,7 @@ export const CustomFilterDropdown = styled(FilterDropdown)(({ theme }) => ({
   color: theme.palette.text.primary, // Tùy chỉnh màu chữ
   borderRadius: "8px", // Bo góc
   padding: "8px 16px",
-  
+  minWidth:"236px",
   "&:hover": {
     backgroundColor: theme.palette.primary.main, // Màu khi hover
     color: theme.palette.primary.contrastText,

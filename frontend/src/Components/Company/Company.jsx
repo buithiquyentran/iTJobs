@@ -1,102 +1,147 @@
-import React from "react";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Box,
-  Button,
-  Chip,
-} from "@mui/material";
-import "./Company.css";
-import { NoEncryption } from "@mui/icons-material";
-const Company = () => {
-  return (
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        borderRadius: 2,
-        boxShadow: 3,
-        overflow: "hidden",
-        borderRadius: "none",
-        height: "461px",
-      }}
-    >
-      {/* Hình ảnh */}
-      <Box className="company-banner">
-        <CardMedia
-          component="img"
-          height="100%"
-          image="https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg"
-          alt="Job banner"
-        />
-        <Box sx={{ padding: 2, display: "flex" }}>
-          <CardMedia
-            className="company-logo"
-            component="img"
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Card, CardMedia, CardContent, Typography, Box, Button, Chip, Tooltip, IconButton } from '@mui/material';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import axios from 'axios';
+import './Company.css';
+import { NoEncryption } from '@mui/icons-material';
+const Company = ({ company }) => {
+    const navigate = useNavigate();
+    const [linhVuc, setLinhVuc] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/employers/${company.MA_NTD}/linh-vuc`);
+                setLinhVuc(response.data.LINH_VUC);
+            } catch (error) {
+                console.error('Error fetching data', error);
+            }
+        };
+        fetchData();
+    }, []);
+    const [bookmarked, setBookmarked] = useState(false);
+    const toggleBookmark = () => {
+        setBookmarked((prev) => !prev);
+        console.log(bookmarked ? 'Removed Bookmark!' : 'Bookmarked!');
+    };
+
+    return (
+        <Card
+            onClick={() => navigate(`/company/${company.MA_NTD}`)}
             sx={{
-              width: "160px",
-              borderRadius: 1,
-              marginRight: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                // borderRadius: 2,
+                boxShadow: 3,
+                overflow: 'hidden',
+                borderRadius: 'none',
+                height: '461px',
             }}
-            image="https://salt.topdev.vn/kuC0LTMMJGOjlgSGZXLZa1JMjJDxK6R_63CNk0G9Ztg/fit/384/1000/ce/1/aHR0cHM6Ly9hc3NldHMudG9wZGV2LnZuL2ltYWdlcy8yMDI0LzEwLzE4L1RvcERldi1Mb2dvLUZESS1UUk9OLTAxLS0tdGh1b25nLWxlLTE3MjkyNDU0MTQucG5n" // Logo công ty
-            alt="Company logo"
-          />
-          <Typography
-            variant="h6"
-            sx={{
-              marginLeft: "157px",
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              WebkitLineClamp: 2, // Giới hạn 3 dòng
-              textOverflow: "ellipsis",
-              marginBottom: "24px",
-            }}
-          >
-            CÔNG TY TNHH LIÊN DOANH XÚC TIẾN ĐẦU TƯ VÀ HỢP TÁC QUỐC TẾ FDI
-          </Typography>
-        </Box>
-      </Box>
-      {/* Chi tiết */}
-      <Box sx={{ padding: 1, marginTop: "99px" }}>
-        <Typography variant="body2" color="text.main" noWrap>
-          FDI Việt Nam - Hợp tác để thành công
-        </Typography>
-        <CardContent sx={{ padding: 0 }}>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            Quận Thanh Xuân, Hà Nội
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1,
-              marginTop: 1,
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography color="text.secondary">Fintech</Typography>
-            {/* Nút Chi tiết */}
-            <Box
-              sx={{ display: "flex", justifyContent: "flex-end", padding: 0 }}
-            >
-              <Button
-                size="small"
-                sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-                color="primary"
-              >
-                Chi tiết →
-              </Button>
+        >
+            {/* Hình ảnh */}
+            <Box className="company-banner">
+                <CardMedia
+                    component="img"
+                    height="100%"
+                    image="https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg"
+                    alt="Job banner"
+                />
+                <Box sx={{ padding: 2, display: 'flex' }}>
+                    <CardMedia
+                        className="company-logo"
+                        component="img"
+                        sx={{
+                            width: '160px',
+                            borderRadius: 1,
+                            marginRight: 2,
+                        }}
+                        image={company.LOGO}
+                        alt="Company logo"
+                    />
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            marginLeft: '157px',
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            WebkitLineClamp: 2, // Giới hạn 3 dòng
+                            textOverflow: 'ellipsis',
+                            marginBottom: '24px',
+                        }}
+                    >
+                        {company.TEN_NTD}
+                    </Typography>
+                </Box>
+                <Tooltip
+                    sx={{
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        background: '#fff',
+                        borderRadius: 0,
+                        borderTopRightRadius: 2,
+                        padding: '8px',
+                        '&:hover': {
+                            background: '#fff',
+                        },
+                    }}
+                    title={bookmarked ? 'Bỏ theo dõi' : 'Theo dõi'}
+                >
+                    <IconButton onClick={toggleBookmark} color="error" size="large">
+                        {bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                    </IconButton>
+                </Tooltip>
             </Box>
-          </Box>
-        </CardContent>
-      </Box>
-    </Card>
-  );
+            {/* Chi tiết */}
+            <Box sx={{ padding: 1, marginTop: '99px' }}>
+                <Typography variant="body2" color="text.main" noWrap>
+                    {company.LOGAN}
+                </Typography>
+                <CardContent sx={{ padding: 0 }}>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                        {company.DIA_CHI}
+                    </Typography>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            gap: 1,
+                            marginTop: 1,
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                width: '249px',
+                            }}
+                            color="text.secondary"
+                        >
+                            {linhVuc?.join(', ')}
+                        </Typography>
+                        {/* Nút Chi tiết */}
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 0 }}>
+                            <Button
+                                size="small"
+                                sx={{
+                                    textTransform: 'none',
+                                    fontWeight: 'bold',
+                                }}
+                                color="primary"
+                            >
+                                Chi tiết →
+                            </Button>
+                        </Box>
+                    </Box>
+                </CardContent>
+            </Box>
+        </Card>
+    );
 };
 
 export default Company;

@@ -1,102 +1,118 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Chip,
-  Divider,
-  Stack,
-  Button,
-} from "@mui/material";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Job = () => {
-  return (
-    <Card
-      sx={{ boxShadow: 3, borderRadius: 2, maxHeight: "260px", width: "100%" }}
-    >
-      <CardContent>
-        {/* Header */}
-        <Box display="flex" alignItems="center" mb={2}>
-          {/* Logo */}
-          <Box
-            component="img"
-            src="https://salt.topdev.vn/kuC0LTMMJGOjlgSGZXLZa1JMjJDxK6R_63CNk0G9Ztg/fit/384/1000/ce/1/aHR0cHM6Ly9hc3NldHMudG9wZGV2LnZuL2ltYWdlcy8yMDI0LzEwLzE4L1RvcERldi1Mb2dvLUZESS1UUk9OLTAxLS0tdGh1b25nLWxlLTE3MjkyNDU0MTQucG5n"
-            alt="Company Logo"
-            sx={{ width: 180, borderRadius: 1, mr: 2 }}
-          />
-          {/* Job Title & Company Name */}
-          <Box flexGrow={1}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography variant="h6" fontWeight="bold">
-                QC (Automation)
-              </Typography>
-              <Button variant="outlined" size="small">
-                Lưu
-              </Button>
-            </Stack>
-            <Typography color="text.secondary" variant="body2">
-              GEM MULTIMEDIA SDN. BHD
-            </Typography>
-            {/* Salary and Level */}
-            <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-              <Typography color="error">Thương lượng</Typography>
-              <Divider orientation="vertical" flexItem />
-              <Typography color="text.secondary">Middle, Senior</Typography>
-            </Stack>
-            {/* Location */}
-            <Typography color="text.secondary" variant="body2" mb={2}>
-              Oversea (Oversea)
-            </Typography>
-            <Divider orientation="hertical" flexItem />
-            {/* Tags */}
-            <Box
-              display="flex"
-              alignItems="center"
-              gap={1}
-              sx={{
-                // maxWidth: "100%",
-                maxWidth: "503px",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                marginTop: "calc(2* var(--mui-spacing))",
-                marginBottom: "12px"
-              }}
-            >
-              {[
-                "QA",
-                "Tester",
-                "Automation Tester",
-                "Automation Developer",
-              ].map((tag, index) => (
-                <Chip
-                  key={index}
-                  label={tag}
-                  clickable
-                  color="primary"
-                  size="small"
-                  sx={{
-                    borderRadius: "4px",
-                    padding: "4px",
-                    fontSize: "16px",
-                    height: "unset"
-                  }}
-                />
-              ))}
-            </Box>
+import { Card, CardContent, Typography, Box, Chip, Divider, Stack, Button } from '@mui/material';
 
-            <Typography color="text.secondary" variant="body2">
-              Đăng 6 giờ trước
-            </Typography>
-          </Box>
-        </Box>
-      </CardContent>
-    </Card>
-  );
+const Job = ({ job }) => {
+    const navigate = useNavigate();
+    const handleSaveRecruiment = (event) => {
+        event.stopPropagation();
+    };
+    const handleSearch = (event) => {
+        event.stopPropagation();
+        console.log('click');
+    };
+    return (
+        <Card
+            onClick={() => navigate(`/job/${job.MA_TTD}`)}
+            sx={{
+                boxShadow: 3,
+                borderRadius: 2,
+                width: '100%',
+                cursor: 'pointer',
+            }}
+        >
+            <CardContent sx={{ paddingBottom: 2 }}>
+                {/* Header */}
+                <Box display="flex" alignItems="center">
+                    {/* Logo */}
+                    <Box
+                        component="img"
+                        src={job.NhaTuyenDung.LOGO}
+                        alt="Company Logo"
+                        sx={{ width: 180, borderRadius: 1, mr: 2 }}
+                    />
+                    {/* Job Title & Company Name */}
+                    <Box flexGrow={1}>
+                        <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Typography variant="h6" fontWeight="bold" sx={{ textAlign: 'left' }}>
+                                {job.TEN_TTD}
+                            </Typography>
+                            <Button variant="outlined" size="small" onClick={handleSaveRecruiment}>
+                                Lưu
+                            </Button>
+                        </Stack>
+                        <Typography sx={{ textAlign: 'left' }} color="text.secondary" variant="body2">
+                            {job.NhaTuyenDung.TEN_NTD}
+                        </Typography>
+                        {/* Salary and Level */}
+                        <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+                            <Typography color="error">{job.MUC_LUONG}</Typography>
+                            <Divider orientation="vertical" flexItem />
+                            <Box>
+                                {job.CapBacs.map((c) => c.TEN_CB).map((tag, index) => (
+                                    <Chip
+                                        key={index}
+                                        label={tag}
+                                        size="small"
+                                        sx={{
+                                            padding: '4px',
+                                            fontSize: '16px',
+                                            height: 'unset',
+                                            marginRight: '2px',
+                                            '&:hover': {
+                                                backgroundColor: 'var(--mui-palette-action-selected)',
+                                                boxShadow: 'none',
+                                            },
+                                        }}
+                                        onClick={handleSearch}
+                                    />
+                                ))}
+                            </Box>
+                        </Stack>
+                        {/* Location */}
+                        <Typography sx={{ textAlign: 'left' }} color="text.secondary" variant="body2" mb={2}>
+                            {job.DIA_CHI}
+                        </Typography>
+                        <Divider orientation="hertical" flexItem />
+                        {/* Tags */}
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            gap={1}
+                            sx={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                marginTop: 'calc(2* var(--mui-spacing))',
+                                marginBottom: '12px',
+                            }}
+                        >
+                            {job.KiNangs.map((k) => k.TEN_KN).map((tag, index) => (
+                                <Chip
+                                    key={index}
+                                    label={tag}
+                                    clickable
+                                    color="primary"
+                                    size="small"
+                                    sx={{
+                                        borderRadius: '4px',
+                                        padding: '4px',
+                                        fontSize: '16px',
+                                        height: 'unset',
+                                    }}
+                                    onClick={handleSearch}
+                                />
+                            ))}
+                        </Box>
+
+                        <Typography sx={{ textAlign: 'right' }} color="text.secondary" variant="body2">
+                            Đăng 6 giờ trước
+                        </Typography>
+                    </Box>
+                </Box>
+            </CardContent>
+        </Card>
+    );
 };
 
 export default Job;

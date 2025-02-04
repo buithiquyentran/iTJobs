@@ -7,6 +7,14 @@ import { StyledInputBase } from "~/Components/Search/Search.styles";
 
 import "./SearchCompany.css";
 function SearchCompany() {
+  const [selected, setSelected] = useState("Công Ty Hàng Đầu");
+  const buttons = [
+    "Công Ty Hàng Đầu",
+    "Công Ty Được Theo Dõi Nhiều",
+    "Công Ty Có Việc Làm Mới Nhất",
+    "Công Ty Đang Chờ Đón Bạn",
+  ];
+
   return (
     <Box className="search">
       <Typography className="search-name">Tìm kiếm</Typography>
@@ -27,19 +35,18 @@ function SearchCompany() {
         </Button>
       </Box>
       <Box className="company-sort">
-        <Button variant="contained" className="company-sort-btn">
-          Công Ty Hàng Đầu
-        </Button>
-        <Button variant="outlined" className="company-sort-btn">
-          Công Ty Được Theo Dõi Nhiều
-        </Button>
-        <Button variant="outlined" className="company-sort-btn">
-          Công Ty Có Việc Làm Mới Nhất
-        </Button>
-        <Button variant="outlined" className="company-sort-btn">
-          Công Ty Đang Chờ Đón Bạn
-        </Button>
+        {buttons.map((label) => (
+          <Button
+            key={label}
+            variant={selected === label ? "contained" : "outlined"}
+            className="company-sort-btn"
+            onClick={() => setSelected(label)} // Cập nhật trạng thái khi click
+          >
+            {label}
+          </Button>
+        ))}
       </Box>
+
     </Box>
   );
 }

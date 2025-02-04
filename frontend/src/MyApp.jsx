@@ -2,8 +2,9 @@ import React from "react";
 import { useLocation, Routes, Route } from "react-router-dom";
 import PrimarySearchAppBar from "~/Components/PrimarySearchAppBar/PrimarySearchAppBar";
 import { SearchJob, SearchBlog, SearchCompany } from "~/Components/Search";
-import Footer from "~/Components/Footer/Footer";
-import { publicRoutes } from "~/routes";
+import Footer from "~/Components/Footer/Footer"
+import { publicRoutes } from "~/routes"
+import { CompanyDetailPage } from "./pages";
 
 function MyApp() {
   const location = useLocation();
@@ -13,20 +14,20 @@ function MyApp() {
     <>
       {/* Hiển thị AppBar nếu không phải trang login */}
       {!isLoginPage && <PrimarySearchAppBar position="static" />}
-
       {/* Các route */}
       <Routes>
         {publicRoutes.map((route, index) => {
-          const Page = route.component;
+          const Page = route.component
           return (
             <Route
               key={index}
               path={route.path}
-              element={
+              element={ 
                 <>
                   {route.path === "/" && <SearchJob />}
                   {route.path === "/company" && <SearchCompany />}
                   {route.path === "/blog" && <SearchBlog />}
+
                   <Page />
                 </>
               }

@@ -38,7 +38,7 @@ const RegisterForm = ({ switchToLogin }) => {
             variant={selected === "Người lao động" ? "contained" : "outlined"}
             sx={{ width: "50%", borderRadius: 0 }}
             onClick={() => handleChange("Người lao động")}
-          >
+          > 
             Người lao động
           </Button>
           <Button
