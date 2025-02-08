@@ -7,7 +7,6 @@ import { Typography } from '@mui/material';
 import './Companies.css';
 import Company from '~/Components/Company/Company';
 function Companies() {
-
     const id = 1;
     const [companies, setCompanies] = useState([]);
     useEffect(() => {
@@ -30,10 +29,9 @@ function Companies() {
                 margin: '24px',
                 cursor: 'pointer',
             }}
-            
         >
             <Typography variant="h6" fontWeight="bold" marginBottom={1}>
-                168 Công Ty IT
+                {companies?.length} Công Ty IT
             </Typography>
             <Grid container spacing={1}>
                 {companies.map((company) => (
@@ -41,7 +39,6 @@ function Companies() {
                         <Company company={company} />
                     </Grid>
                 ))}
-                
             </Grid>
         </Box>
     );

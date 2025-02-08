@@ -4,6 +4,12 @@ const app = express();
 const userRoutes = require("./routes/userRoutes");
 const employerRoutes = require("./routes/employerRoutes");
 const recruitmentNewsRoutes = require("./routes/recruitmentNewsRoutes");
+const fieldRoutes = require("./routes/fieldRoutes");
+const authRoutes = require("./routes/authRoutes");
+const loaiHopDongRoutes = require("./routes/loaiHopDongRoutes");
+const loaiHinhRoutes = require("./routes/loaiHinhRoutes");
+const capBacRoutes = require("./routes/capBacRoutes");
+
 app.use(express.json());
 app.use(
   cors({
@@ -15,4 +21,10 @@ app.use(
 app.use("/users", userRoutes);
 app.use("/employers", employerRoutes);
 app.use("/recruitments", recruitmentNewsRoutes);
+app.use("/fields", fieldRoutes);
+app.use("/auth-page", authRoutes);
+app.use("/loai-hd", loaiHopDongRoutes);
+app.use("/loai-hinh", loaiHinhRoutes);
+app.use("/cap-bac", capBacRoutes);
+
 module.exports = app;

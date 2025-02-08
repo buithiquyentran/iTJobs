@@ -1,10 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
 const User = require("./User");
-// const LinhVuc = require("./LinhVuc");
-// const TinTuyenDung = require("./TinTuyenDung");
-// const NguoiLaoDong = require("./NguoiLaoDong");
-// const NGUOI_LAO_DONG_FOLLOW = require("./NGUOI_LAO_DONG_FOLLOW")
+
 const NhaTuyenDung = sequelize.define(
   "NhaTuyenDung",
   {
@@ -19,8 +16,10 @@ const NhaTuyenDung = sequelize.define(
     DAI_NGO: { type: DataTypes.JSON, allowNull: true },
     DIA_CHI: { type: DataTypes.STRING, allowNull: true },
     DIA_CHI_CU_THE: { type: DataTypes.JSON, allowNull: true },
-    LINK: { type: DataTypes.STRING, allowNull: false },
+    LINK: { type: DataTypes.STRING, allowNull: true },
     WEBSITE: { type: DataTypes.STRING, allowNull: true },
+    MST: { type: DataTypes.STRING, allowNull: true },
+    EMAIL: { type: DataTypes.STRING },
     SDT: {
       type: DataTypes.STRING(10),
       allowNull: true,
@@ -34,19 +33,4 @@ const NhaTuyenDung = sequelize.define(
   }
 );
 
-// NhaTuyenDung.belongsTo(User, { foreignKey: "SDT" });
-// NhaTuyenDung.belongsToMany(KiNang, {
-//   through: "NHA_TUYEN_DUNG_KI_NANG",
-//   foreignKey: "MA_NTD",
-// });
-// NhaTuyenDung.belongsToMany(LinhVuc, {
-//   through: "NHA_TUYEN_DUNG_LINH_VUC",
-//   foreignKey: "MA_NTD",
-// });
-// NhaTuyenDung.hasMany(TinTuyenDung, { foreignKey: "MA_NTD" });
-
-// NhaTuyenDung.belongsToMany(NguoiLaoDong, {
-//   through: NGUOI_LAO_DONG_FOLLOW,
-//   foreignKey: "MA_NTD",
-// });
 module.exports = NhaTuyenDung;

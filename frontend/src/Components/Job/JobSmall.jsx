@@ -42,7 +42,7 @@ const JobSmall = ({ job }) => {
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    width: '302px',
+                                    width: '286px',
                                 }}
                                 variant="h9"
                                 fontWeight="bold"
@@ -55,7 +55,7 @@ const JobSmall = ({ job }) => {
                                 whiteSpace: 'nowrap',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
-                                width: '302px',
+                                width: '286px',
                             }}
                             color="text.secondary"
                             variant="body2"

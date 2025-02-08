@@ -68,6 +68,9 @@ const JobDetailPage = () => {
                             </Typography>
                             {/* Job information */}
                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <Typography variant="8" color="error" fontWeight="bold">
+                                    {job?.NhaTuyenDung.TEN_NTD}
+                                </Typography>
                                 <Box>
                                     {job?.DIA_CHI_CU_THE.map((dc) => (
                                         <Box

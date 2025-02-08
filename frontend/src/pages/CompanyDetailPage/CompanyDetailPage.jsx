@@ -67,8 +67,9 @@ const CompanyDetails = () => {
                     sx={{
                         height: 400,
                         width: '100%',
-                        backgroundImage:
-                            'url("https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg")',
+                        backgroundImage: company?.IMG
+                            ? `url(${company.IMG})`
+                            : 'url("https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg")',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         borderRadius: '8px',
@@ -116,7 +117,7 @@ const CompanyDetails = () => {
                                         {company?.LOGAN}
                                     </Typography>
                                     <Box>
-                                        <Link href="#">3 vị trí tuyển dụng</Link>
+                                        <Link href="#">{jobs?.length} vị trí tuyển dụng</Link>
                                     </Box>
                                 </Box>
                                 {/* Actions */}
@@ -143,7 +144,7 @@ const CompanyDetails = () => {
                 >
                     <Tabs value={tabIndex} onChange={handleTabChange}>
                         <Tab label="THÔNG TIN CÔNG TY" />
-                        <Tab label= {`${jobs?.length} VỊ TRÍ TUYỂN DỤNG `}/>
+                        <Tab label={`${jobs?.length} VỊ TRÍ TUYỂN DỤNG `} />
                     </Tabs>
                     <Box hidden={tabIndex !== 0} padding={2}>
                         <Box>

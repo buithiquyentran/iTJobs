@@ -33,5 +33,5 @@ const TinTuyenDung = sequelize.define(
     timestamps: false, //Tắt timestamps để không tự động thêm createdAt, updatedAt
   }
 );
-
+  
 module.exports = TinTuyenDung;

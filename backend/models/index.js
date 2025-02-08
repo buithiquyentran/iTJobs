@@ -3,6 +3,8 @@ const { sequelize } = require("../config/db");
 
 const LinhVuc = require("./LinhVuc");
 const KiNang = require("./KiNang");
+const LoaiHinh = require("./LoaiHinh");
+const LoaiHopDong = require("./LoaiHopDong");
 const CapBac = require("./CapBac");
 const Role = require("./Role");
 const User = require("./User");
@@ -149,10 +151,21 @@ KiNang.belongsToMany(CV, {
   foreignKey: "MA_KN",
   timestamps: false,
 });
+
+LoaiHinh.belongsTo(TinTuyenDung, {
+  foreignKey: "MA_LOAI_HINH",
+  onDelete: "CASCADE",
+});
+LoaiHopDong.belongsTo(TinTuyenDung, {
+  foreignKey: "MA_LOAI_HD",
+  onDelete: "CASCADE",
+});
 const db = {
   sequelize,
   LinhVuc,
   KiNang,
+  LoaiHinh,
+  LoaiHopDong,
   CapBac,
   Role,
   User,
