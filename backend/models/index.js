@@ -118,6 +118,7 @@ NguoiLaoDong.belongsToMany(CapBac, {
   foreignKey: "MA_NLD",
   timestamps: false,
 });
+
 CapBac.belongsToMany(NguoiLaoDong, {
   through: "NGUOI_LAO_DONG_CAP_BAC",
   foreignKey: "MA_CB",
@@ -152,14 +153,18 @@ KiNang.belongsToMany(CV, {
   timestamps: false,
 });
 
-LoaiHinh.belongsTo(TinTuyenDung, {
+TinTuyenDung.belongsTo(LoaiHinh, { foreignKey: "MA_LOAI_HINH" });
+LoaiHinh.hasMany(TinTuyenDung, {
   foreignKey: "MA_LOAI_HINH",
   onDelete: "CASCADE",
 });
-LoaiHopDong.belongsTo(TinTuyenDung, {
+
+TinTuyenDung.belongsTo(LoaiHopDong, { foreignKey: "MA_LOAI_HD" });
+LoaiHopDong.hasMany(TinTuyenDung, {
   foreignKey: "MA_LOAI_HD",
   onDelete: "CASCADE",
 });
+
 const db = {
   sequelize,
   LinhVuc,

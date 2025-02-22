@@ -7,7 +7,7 @@ const { sequelize } = require("../config/db");
 
 exports.registerEmployer = async (req, res) => {
   try {
-    const { SDT, MK, TEN_NTD, EMAIL, MST, DIA_CHI, Linh_Vuc } = req.body;
+    const { SDT, MK, TEN_NTD, EMAIL, MST, DIA_CHI, Linh_Vuc } = req.query;
 
     const [results] = await sequelize.query(
       "CALL registerEmployer(:SDT, :MK, :TEN_NTD, :EMAIL, :MST, :DIA_CHI, :Linh_Vuc)",

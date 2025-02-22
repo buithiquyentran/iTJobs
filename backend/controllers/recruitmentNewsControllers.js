@@ -1,4 +1,6 @@
 const { sequelize, LinhVuc, CapBac } = require("../models");
+const { Op } = require("sequelize"); // Import Sequelize Operators
+
 const { TinTuyenDung, NhaTuyenDung, KiNang } = require("../models");
 exports.getRecruitments = async (req, res) => {
   try {
@@ -66,10 +68,50 @@ exports.getTinTuyenDungCapBac = async (req, res) => {
     res.status(500).json("Error fetching data");
   }
 };
-exports.getRecruitmentWithCompany = async (req, res) => {
+// exports.getRecruitmentWithCompany = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const whereCondition = id ? { MA_TTD: id } : {};
+//     const tintuyendung = await TinTuyenDung.findAll({
+//       where: whereCondition,
+//       include: [
+//         {
+//           model: NhaTuyenDung,
+//           attributes: ["TEN_NTD", "LOGO"],
+//         },
+//         {
+//           model: KiNang,
+//           attributes: ["TEN_KN"],
+//           through: { attributes: [] },
+//         },
+//         {
+//           model: CapBac,
+//           attributes: ["TEN_CB"],
+//           through: { attributes: [] },
+//         },
+//       ],
+//     });
+//     // console.log("Dữ liệu trả về:", JSON.stringify(tintuyendung, null, 2));
+//     res.status(200).json(tintuyendung);
+//   } catch (error) {
+//     console.error("Error fetching recruitment news with company info:", error);
+//     res.status(500).json({ message: "Lỗi khi lấy dữ liệu" });
+//   }
+// };
+ exports.getRecruitmentWithCompany = async (req, res) => {
   try {
-    const { id } = req.params;
-    const whereCondition = id ? { MA_TTD: id } : {};
+    const { ids } = req.query; // Nhận danh sách ID từ query parameters (vd: ?ids=1,2,3)
+
+    let whereCondition = {};
+    if (ids) {
+      const idList = ids.split(",").map((id) => id.trim()); // Chuyển chuỗi thành mảng các ID
+      whereCondition = {
+        MA_TTD: {
+          [Op.in]: idList, // Sử dụng toán tử IN để tìm các ID nằm trong danh sách
+        },
+      };
+    }
+
     const tintuyendung = await TinTuyenDung.findAll({
       where: whereCondition,
       include: [
@@ -84,12 +126,12 @@ exports.getRecruitmentWithCompany = async (req, res) => {
         },
         {
           model: CapBac,
-          attributes: ["TEN_CB"],
+          attributes: ["TEN_CB"], 
           through: { attributes: [] },
         },
       ],
     });
-    // console.log("Dữ liệu trả về:", JSON.stringify(tintuyendung, null, 2));
+
     res.status(200).json(tintuyendung);
   } catch (error) {
     console.error("Error fetching recruitment news with company info:", error);
@@ -99,10 +141,10 @@ exports.getRecruitmentWithCompany = async (req, res) => {
 
 exports.getRecruitmentsByCompany = async (req, res) => {
   try {
-    const { ma_ntd } = req.params; 
+    const { ma_ntd } = req.params;
 
     const recruitments = await TinTuyenDung.findAll({
-      where: { MA_NTD: ma_ntd }, 
+      where: { MA_NTD: ma_ntd },
       include: [
         {
           model: NhaTuyenDung,
@@ -127,4 +169,3 @@ exports.getRecruitmentsByCompany = async (req, res) => {
     res.status(500).json({ message: "Lỗi khi lấy dữ liệu" });
   }
 };
-

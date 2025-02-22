@@ -27,7 +27,7 @@ const RegisterEmployee = ({ switchToLogin }) => {
         try {
             const { SDT, MK, TEN_NLD } = formData;
             const response = await axios.post('http://localhost:5000/auth-page/register-employee', {
-                SDT,
+                SDT,  
                 MK,
                 TEN_NLD,
             });

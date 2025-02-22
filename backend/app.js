@@ -9,7 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const loaiHopDongRoutes = require("./routes/loaiHopDongRoutes");
 const loaiHinhRoutes = require("./routes/loaiHinhRoutes");
 const capBacRoutes = require("./routes/capBacRoutes");
-
+const searchRoutes = require("./routes/searchRoutes");
 app.use(express.json());
 app.use(
   cors({
@@ -26,5 +26,6 @@ app.use("/auth-page", authRoutes);
 app.use("/loai-hd", loaiHopDongRoutes);
 app.use("/loai-hinh", loaiHinhRoutes);
 app.use("/cap-bac", capBacRoutes);
+app.use("/search", searchRoutes);
 
 module.exports = app;

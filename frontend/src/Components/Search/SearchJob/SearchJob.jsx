@@ -43,6 +43,32 @@ function SearchJob() {
         typeOfWork: '',
         employmentType: '',
     });
+    const handleSearch = async () => {
+        const combineFilter = { ...filters, activeKeyword };
+        const {
+            address: DIA_CHI,
+            jobLevel: CAP_DO,
+            typeOfWork: LOAI_HINH,
+            employmentType: LOAI_HD,
+            activeKeyword: KEY_WORD,
+        } = combineFilter;
+        console.log({ DIA_CHI, CAP_DO, LOAI_HINH, LOAI_HD, KEY_WORD });
+        try {
+            const jobFilters = await axios.get('http://localhost:5000/search/jobs', {
+                params: {
+                    // ✅ Sử dụng "params" để truyền query parameters
+                    DIA_CHI,
+                    CAP_DO,
+                    LOAI_HINH,
+                    LOAI_HD,
+                    KEY_WORD: KEY_WORD.join(','), // Nếu là mảng, có thể join thành chuỗi để xử lý
+                },
+            });
+            console.log(jobFilters.data);
+        } catch (error) {
+            console.error('Error fetching data', error);
+        }
+    };
     const handleFilterChange = (name, value) => {
         setFilters((prevFilters) => ({
             ...prevFilters,
@@ -57,7 +83,7 @@ function SearchJob() {
             typeOfWork: '',
             employmentType: '',
         });
-        setActiveKeyword([])
+        setActiveKeyword([]);
     };
     const handleClickKeyword = (keyword) => {
         setActiveKeyword((prev) =>
@@ -69,14 +95,14 @@ function SearchJob() {
         <Box className="search">
             <Typography className="search-name">Tìm kiếm</Typography>
             <Box className="searchbar">
-                {/* Input tìm kiếm */}
+                {/* Input tìm kiếm */}  
                 <StyledInputBase
                     placeholder="Nhập từ khóa công việc"
                     inputProps={{ 'aria-label': 'search' }}
                     className="search-input"
                 />
                 {/* Nút bấm tìm kiếm */}
-                <Button variant="contained" className="search-btn" startIcon={<SearchIcon />}>
+                <Button onClick={handleSearch} variant="contained" className="search-btn" startIcon={<SearchIcon />}>
                     Tìm kiếm
                 </Button>
             </Box>
@@ -89,7 +115,7 @@ function SearchJob() {
                             onClick={() => handleClickKeyword(keyword)}
                             key={index}
                             label={keyword}
-                            // clickable
+                            clickable
                             variant="outlined"
                             sx={{
                                 borderRadius: '4px',
@@ -97,8 +123,8 @@ function SearchJob() {
                                 backgroundColor: isActive ? 'secondary.main' : 'transparent', // Đổi màu khi active
                                 color: isActive ? '#fff' : '#000',
                                 '&:hover': {
-                                    backgroundColor: isActive ? 'transparent !important': 'secondary.main !important' , // Thêm màu hover rõ ràng hơn
-                                    color:'#000'
+                                    backgroundColor: isActive ? 'transparent !important' : 'secondary.main !important', // Thêm màu hover rõ ràng hơn
+                                    color: '#000',
                                 },
                             }}
                         />

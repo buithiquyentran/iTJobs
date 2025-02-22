@@ -6,7 +6,6 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import axios from 'axios';
 import './Company.css';
-import { NoEncryption } from '@mui/icons-material';
 const Company = ({ company }) => {
     const navigate = useNavigate();
     const [linhVuc, setLinhVuc] = useState([]);

@@ -24,7 +24,14 @@ const pages = [
     ['Công Ty IT', '/company'],
     ['Blog IT', 'blog'],
 ];
-const settings = ['Tài khoản', 'Quản lí CV', 'Việc đã ứng tuyển', 'Việc đã lưu', 'Công ty theo dõi', 'Đăng xuất'];
+const settings = [
+    { name: 'Tài khoản', path: '/account' },
+    { name: 'Quản lí CV', path: '/manage-cv' },
+    { name: 'Việc đã ứng tuyển', path: '/applied-jobs' },
+    { name: 'Việc đã lưu', path: '/saved-jobs' },
+    { name: 'Công ty theo dõi', path: '/following-companies' },
+    { name: 'Đăng xuất' },
+];
 
 export default function PrimarySearchAppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -67,8 +74,10 @@ export default function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            {settings.map((setting) => (
-                <MenuItem onClick={handleMenuClose}>{setting}</MenuItem>
+            {settings.map((setting, index) => (
+                <MenuItem key={index} component={Link} to={setting.path} onClick={handleMenuClose}>
+                    {setting.name}
+                </MenuItem>
             ))}
         </Menu>
     );

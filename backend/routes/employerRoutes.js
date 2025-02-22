@@ -11,6 +11,6 @@ const {
 router.get("/", getEmployers);
 router.get("/:id", getEmployer);
 router.get("/:id/linh-vuc", getNhaTuyenDungLinhVuc);
-router.get("/:id/ki-nang", getNhaTuyenDungKiNang);
+router.get("/:id/ki-nang", getNhaTuyenDungKiNang); 
 
 module.exports = router;

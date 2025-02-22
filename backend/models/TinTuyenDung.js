@@ -1,6 +1,9 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
 const NhaTuyenDung = require("./NhaTuyenDung");
+const LoaiHopDong = require("./LoaiHopDong");
+const LoaiHinh = require("./LoaiHinh");
+
 const TinTuyenDung = sequelize.define(
   "TinTuyenDung",
   {
@@ -24,7 +27,19 @@ const TinTuyenDung = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: NhaTuyenDung, key: "MA_NTD" },
-      onDelete: "CASCADE", // ✅ Đảm bảo dữ liệu xóa đúng logic
+      onDelete: "CASCADE",
+    },
+    MA_LOAI_HINH: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: LoaiHinh, key: "MA_LOAI_HINH" },
+      onDelete: "CASCADE",
+    },
+    MA_LOAI_HD: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: LoaiHopDong, key: "MA_LOAI_HD" },
+      onDelete: "CASCADE",
     },
   },
   {
@@ -33,5 +48,5 @@ const TinTuyenDung = sequelize.define(
     timestamps: false, //Tắt timestamps để không tự động thêm createdAt, updatedAt
   }
 );
-  
+
 module.exports = TinTuyenDung;

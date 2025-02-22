@@ -1,4 +1,6 @@
 const { NhaTuyenDung, LinhVuc, KiNang } = require("../models");
+const { Op } = require("sequelize");
+
 exports.getNhaTuyenDungLinhVuc = async (req, res) => {
   const { id } = req.params;
   try {
@@ -53,7 +55,19 @@ exports.getNhaTuyenDungKiNang = async (req, res) => {
 };
 exports.getEmployers = async (req, res) => {
   try {
-    const companies = await NhaTuyenDung.findAll(); // Lấy tất cả công việc từ bảng Job
+    const { ids } = req.query;
+    let whereCondition = {};
+    if (ids) {
+      const idList = ids.split(",").map((id) => id.trim());
+      whereCondition = {
+        MA_NTD: {
+          [Op.in]: idList,
+        },
+      };
+    }
+    const companies = await NhaTuyenDung.findAll({
+      where: whereCondition,
+    }); // Lấy tất cả công việc từ bảng Job
     res.json(companies);
   } catch (error) {
     console.error("Error fetching companies", error.message);

@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { StyledInputBase } from "~/Components/Search/Search.styles";
 
-import "./SearchCompany.css";
+import "./SearchCompany.css"; 
 function SearchCompany() {
   const [selected, setSelected] = useState("Công Ty Hàng Đầu");
   const buttons = [

@@ -17,10 +17,12 @@ const JobDetailPage = () => {
     const [linhVuc, setLinhVuc] = useState([]);
     const [jobs, setJobs] = useState(null);
 
-    useEffect(() => {
+    useEffect(() => { 
         const fetchData = async () => {
             try {
-                const job = await axios.get(`http://localhost:5000/recruitments/${id}/with-company`);
+                // const job = await axios.get(`http://localhost:5000/recruitments/${id}/with-company`);
+                const job = await axios.get(`http://localhost:5000/recruitments/with-company`, {params: {ids: id}});
+
                 setJob(job.data[0]);
 
                 const company = await axios.get(`http://localhost:5000/employers/${job.data[0].MA_NTD}`);

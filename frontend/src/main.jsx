@@ -9,7 +9,7 @@ import './index.css';
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 
-root.render(
+root.render( 
     <React.StrictMode>
         <ThemeProvider theme={theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
