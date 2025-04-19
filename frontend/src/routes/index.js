@@ -1,7 +1,7 @@
 import {
     Blog,
     Companies,
-    Home,
+    Jobs,
     AuthPage,
     JobDetailPage,
     CompanyDetailPage,
@@ -11,20 +11,42 @@ import {
     SaveJobPage,
     FollowingCompanyPage,
     CVPreview,
-} from '~/pages';
-export const publicRoutes = [
-    { path: '/', component: Home },
+    HomePage,
+} from '~/UserDashBoard/Pages';
+import {
+    EmployerHome,
+    MyCompany,
+    MyRecruiments,
+    MyCandidates,
+    Statistics,
+    MyHistory,
+    Support,
+} from '~/EmployerDashBoard/Pages';
+export const UserDashBoardRoutes = [
+    { path: '/', component: HomePage },
+    { path: '/jobs', component: Jobs },
     { path: '/company', component: Companies },
     { path: '/blog', component: Blog },
     { path: '/auth-page', component: AuthPage },
     { path: '/job/:id', component: JobDetailPage },
     { path: '/company/:id', component: CompanyDetailPage },
-    { path: '/user/view-cv', component: CVPreview },
+    { path: '/user/view-cv/', component: CVPreview },
+    { path: '/user/view-cv/:id', component: CVPreview },
 
-    { text: 'Tài khoản', path: '/account', component: AccountPage },
-    { text: 'Quản lí CV', path: '/manage-cv', component: ManageCVPage },
-    { text: 'Việc đã ứng tuyển', path: '/applied-jobs', component: AppliedJobPage },
-    { text: 'Việc đã lưu', path: '/saved-jobs', component: SaveJobPage },
-    { text: 'Công ty theo dõi', path: '/following-companies', component: FollowingCompanyPage },
+    { text: 'Tài khoản', path: '/settings/account', component: AccountPage },
+    { text: 'Quản lí CV', path: '/settings/manage-cv', component: ManageCVPage },
+    { text: 'Việc đã ứng tuyển', path: '/settings/applied-jobs', component: AppliedJobPage },
+    { text: 'Việc đã lưu', path: '/settings/saved-jobs', component: SaveJobPage },
+    { text: 'Công ty theo dõi', path: '/settings/following-companies', component: FollowingCompanyPage },
 ];
-export const privateRoutes = [];
+
+export const EmployerDashBoardRoutes = [
+    { path: '/', component: EmployerHome },
+    { path: '/my-company', component: MyCompany },
+    { path: '/my-recruiments', component: MyRecruiments },
+    { path: '/my-candidates', component: MyCandidates },
+    { path: '/statistics', component: Statistics },
+    { path: '/my-history', component: MyHistory },
+    { path: '/support', component: Support },
+    { path: '/user/view-cv/:id', component: CVPreview },
+];

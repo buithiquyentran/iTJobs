@@ -8,7 +8,12 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import ComputerIcon from "@mui/icons-material/Computer";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+
+
+
 const Navbar = () => {
+
+  
   return (
     <AppBar position="static">
       <Toolbar
@@ -21,7 +26,7 @@ const Navbar = () => {
         <IconButton
           size="large"
           edge="start"
-          color="inherit"
+          color="inherit" 
           aria-label="open drawer"
           sx={{ marginRight: 2 }}
         >
@@ -61,7 +66,6 @@ const Navbar = () => {
         >
           <AccountCircle />
         </IconButton>
-        <Box>Bùi Thị Quyền Trân</Box>
       </Toolbar>
     </AppBar>
   );

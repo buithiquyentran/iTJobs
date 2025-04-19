@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-const { sequelize } = require("./models"); // Import sequelize từ models/index.js
+const { sequelize } = require("./app/models"); // Import sequelize từ models/index.js
 const app = require("./app");
 
 dotenv.config();
@@ -11,8 +11,8 @@ const startServer = async () => {
     console.log("Database connected!");
 
     // Đồng bộ các bảng
-    await sequelize.sync({ alter: true });
-    console.log("Database synchronized!");
+    // await sequelize.sync({ alter: true });
+    // console.log("Database synchronized!");
 
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
