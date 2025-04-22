@@ -19,7 +19,7 @@ Hệ thống hỗ trợ kết nối giữa nhà tuyển dụng và người tìm
 
 ## 📁 Cấu trúc thư mục
 ```bash
-.
+
 ├── frontend/            # Frontend người dùng
 ├── admin/               # Giao diện quản trị viên
 ├── backend/              # Backend - Express API
@@ -27,6 +27,7 @@ Hệ thống hỗ trợ kết nối giữa nhà tuyển dụng và người tìm
 └── README.md
 ```
 ⚙️ 1. Cài đặt Cơ Sở Dữ Liệu
+
 ✅ Yêu cầu
 MySQL Workbench
 
@@ -37,6 +38,7 @@ Trong thư mục database/ có chứa:
 backup.mysql/ (dạng Dump Project Folder) bao gồm tất cả: bảng, dữ liệu, trigger, view, procedure,...
 
 💡 Cách import dữ liệu:
+
 ✔️ Dùng MySQL Workbench
 Vào menu Server > Data Import
 Chọn Import from Dump Project Folder
@@ -47,10 +49,10 @@ Nhấn Start Import
 🖥️ 2. Backend
 Node.js >= 16
 npm hoặc yarn
-
+```bash
 cd backend
 npm install
-
+```
 Tạo file .env trong thư mục backend/:
 PORT=5000
 DB_HOST=localhost
@@ -59,17 +61,23 @@ DB_PASSWORD=yourpassword
 DB_NAME=database_name
 JWT_SECRET=your_jwt_secret
 
-chạy server: npm start
+chạy server:
+```bash
+npm start
+```
 
 🌐 3. Frontend 
+```bash
 cd frontend
 npm install
 npx vite
-
+```
 🌐 3. Admin 
+```bash
 cd admin
 npm install
 npx vite
+```
 
 
 
