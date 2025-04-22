@@ -1,7 +1,7 @@
 import createApiClient from './api.service';
 
 class AuthService {
-    constructor(baseUrl = 'api/auth-page') {
+    constructor(baseUrl = '/api/auth-page') {
         this.api = createApiClient(baseUrl);
     }
     async Login(data) {

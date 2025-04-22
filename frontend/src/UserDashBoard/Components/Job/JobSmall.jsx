@@ -40,7 +40,7 @@ const JobSmall = ({ job, saveJobs, username, onToggleSave, applying }) => {
                 boxShadow: 3,
                 borderRadius: 2,
                 height: '180px',
-                
+
                 width: '100%',
                 cursor: 'pointer',
                 borderRadius: 'none',
@@ -53,7 +53,12 @@ const JobSmall = ({ job, saveJobs, username, onToggleSave, applying }) => {
                     {/* Logo */}
                     <Box
                         component="img"
-                        src={job.NhaTuyenDung.LOGO}
+                        // src={job.NhaTuyenDung.LOGO}
+                        src={
+                            job.NhaTuyenDung?.LOGO?.startsWith('/uploads/')
+                                ? `http://localhost:5000${job.NhaTuyenDung.LOGO}`
+                                : job.NhaTuyenDung?.LOGO
+                        }
                         alt="Company Logo"
                         sx={{ width: 112, borderRadius: 1, mr: 2 }}
                     />

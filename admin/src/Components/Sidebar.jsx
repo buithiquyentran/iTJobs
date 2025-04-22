@@ -31,7 +31,8 @@ const Sidebar = () => {
       if (confirm) {
         const response = await AuthService.Logout();
         localStorage.removeItem("role");
-        navigate("/auth-page", { replace: true });
+        // navigate("/auth-page", { replace: true });
+        window.location.href = "http://localhost:5173/auth-page";
       }
       window.location.reload();
     } catch (error) {
@@ -58,7 +59,6 @@ const Sidebar = () => {
             component={Link}
             to={item.path}
             selected={selectedIndex === index}
-
             color="error"
             onClick={
               item.path

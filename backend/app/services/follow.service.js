@@ -1,4 +1,4 @@
-const { NGUOI_LAO_DONG_FOLLOW } = require("../models");
+const { NGUOI_LAO_DONG_FOLLOW, NguoiLaoDong } = require("../models");
 
 class FollowService {
   // Lấy tất cả
@@ -17,8 +17,20 @@ class FollowService {
       },
     });
   }
-  async findByUserName(maNld) {
+  async findByMA_NLD(maNld) {
     return await NGUOI_LAO_DONG_FOLLOW.findAll({ where: { MA_NLD: maNld } });
+  }
+  async findByMA_NTD(maNtd) {
+    return await NGUOI_LAO_DONG_FOLLOW.findAll({
+      where: { MA_NTD: maNtd },
+      include: [
+        {
+          model: NguoiLaoDong,
+          // attributes: ["SDT"],
+          // through: { attributes: [] },
+        },
+      ],
+    });
   }
   // Tạo mới
   async create(data) {

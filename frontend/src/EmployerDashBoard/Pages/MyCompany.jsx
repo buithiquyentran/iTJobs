@@ -43,11 +43,11 @@ const MyCompany = () => {
                 setCompanyInfo(response);
 
                 // if (response.DIA_CHI_CU_THE?.length > 0)
-                setCompanyInfo((prev) => ({ ...prev, DIA_CHI_CU_THE: response.DIA_CHI_CU_THE.join('\n') || '' }));
+                setCompanyInfo((prev) => ({ ...prev, DIA_CHI_CU_THE: response.DIA_CHI_CU_THE?.join('\n') || '' }));
                 // if (response.ABOUT?.length > 0)
-                setCompanyInfo((prev) => ({ ...prev, ABOUT: response.ABOUT.join('\n') || '' }));
+                setCompanyInfo((prev) => ({ ...prev, ABOUT: response.ABOUT?.join('\n') || '' }));
                 // if (response.DAI_NGO?.length > 0)
-                setCompanyInfo((prev) => ({ ...prev, DAI_NGO: response.DAI_NGO.join('\n') || '' }));
+                setCompanyInfo((prev) => ({ ...prev, DAI_NGO: response.DAI_NGO?.join('\n') || '' }));
                 setCompanyInfo((prev) => ({ ...prev, MA_KN: response.KiNangs?.map((item) => item.MA_KN) || [] }));
                 setCompanyInfo((prev) => ({ ...prev, MA_LV: response.LinhVucs?.map((item) => item.MA_LV) || [] }));
 

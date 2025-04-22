@@ -15,9 +15,12 @@ import LuuTtdService from '~/UserDashBoard/services/luuTtd.service';
 import AuthService from '~/UserDashBoard/services/auth.service';
 const keywords = ['Java', 'C++', 'JavaScript', 'UI/UX', 'C#', 'Fresher', 'Python', 'PHP', 'Product Owner'];
 const addressOptions = ['Cần Thơ', 'Hồ Chí Minh', 'Bình Dương', 'Đà Nẵng', 'Hà Nội'];
+import tinTuyenDungService from '~/UserDashBoard/services/tinTuyenDung.service';
 
 function Jobs() {
     const [jobs, setJobs] = useState([]);
+    const [suggestedJobs, setSuggestedJobs] = useState([]);
+
     const [jobLevels, setJobLevels] = useState([]);
     const [typeOfWorks, setTypeOfWorks] = useState([]);
     const [employmentTypes, setEmploymentTypes] = useState([]);
@@ -51,6 +54,9 @@ function Jobs() {
                 const luuTtd = await LuuTtdService.getByUsername(response4.SDT);
                 // console.log(luuTtd.map((item) => item.MA_TTD));
                 setSaveJobs(luuTtd.map((item) => item.MA_TTD));
+
+                const response5 = await tinTuyenDungService.getSuggestedCaNhan(response4.MA_NLD);
+                setSuggestedJobs(response5);
             };
             fetchData();
         } catch (error) {
@@ -76,6 +82,8 @@ function Jobs() {
                         CapBacs,
                         KiNangs,
                         NhaTuyenDung,
+                        LoaiHinh,
+                        LoaiHopDong,
                     } = job;
                     const CAP_BAC = CapBacs.map((item) => item.TEN_CB).join(' ');
                     const KI_NANG = KiNangs.map((item) => item.TEN_KN).join(' ');
@@ -101,6 +109,8 @@ function Jobs() {
                         CAP_BAC,
                         KI_NANG,
                         NHA_TUYEN_DUNG,
+                        LoaiHinh.TEN_LOAI_HINH,
+                        LoaiHopDong.TEN_LOAI_HD,
                     ].join(' ');
                 });
                 setJobStrings(jobString);
@@ -118,7 +128,9 @@ function Jobs() {
     };
 
     const handleSearch = async () => {
-        const concatKeyword = [...activeKeyword, keyword];
+        const concatKeyword = [...new Set([...activeKeyword, keyword].map((k) => k.toLowerCase()))];
+
+        console.log(concatKeyword);
         const combineFilter = { ...filters, concatKeyword };
         const {
             address: DIA_CHI,
@@ -128,14 +140,15 @@ function Jobs() {
             concatKeyword: KEY_WORD,
         } = combineFilter;
         const keywords = [DIA_CHI, CAP_DO, LOAI_HINH, LOAI_HD, KEY_WORD.join(' ')];
-        console.log(keywords);
-
+        // console.log(keywords);
         if (keywords && keywords.length > 0) {
             const jobFilter = jobs?.filter((_job, index) =>
                 keywords.every((keyword) =>
                     jobStrings[index]?.trim().toLowerCase().includes(keyword.toLowerCase().trim()),
                 ),
             );
+
+            // console.log(jobFilter);
             setFilterJobs(jobFilter);
         }
     };
@@ -165,7 +178,11 @@ function Jobs() {
         const { value } = event.target;
         setKeyword(value);
     };
-
+    // const handleChange = (e) => {
+    //     const value = e.target.value;
+    //     setKeyword(value);
+    //     debouncedSearch(value);
+    // };
     return (
         <>
             <Box className="search">
@@ -176,8 +193,13 @@ function Jobs() {
                         placeholder="Nhập từ khóa công việc"
                         inputProps={{ 'aria-label': 'search' }}
                         className="search-input"
-                        onChange={handleChange}
+                        onChange={(e) => setKeyword(e.target.value)}
                         value={keyword}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSearch(); // Gọi hàm tìm kiếm
+                            }
+                        }}
                     />
                     {/* Nút bấm tìm kiếm */}
                     <Button
@@ -311,7 +333,13 @@ function Jobs() {
                     {/* Việc làm phù hợp với bạn */}
                     <Card>
                         <Typography
-                            sx={{ padding: 1, backgroundColor: '#ccd6d5', display: 'block', width: '100%' }}
+                            sx={{
+                                padding: 1,
+                                backgroundColor: '#ccd6d5',
+                                display: 'block',
+                                width: '100%',
+                                marginTop: 2,
+                            }}
                             variant="h8"
                             fontWeight="bold"
                         >
@@ -319,7 +347,7 @@ function Jobs() {
                         </Typography>
                         <Divider orientation="horizontal" flexItem />
                         <Box sx={{ padding: 1, borderRadius: 2, paddingLeft: 0 }}>
-                            {jobs?.slice(0, 3).map((job, index) => {
+                            {suggestedJobs?.map((job, index) => {
                                 if (index !== 0) {
                                     return (
                                         <>

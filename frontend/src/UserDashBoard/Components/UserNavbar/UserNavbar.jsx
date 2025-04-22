@@ -80,12 +80,13 @@ export default function UserNavbar() {
     const handleLogout = async () => {
         try {
             const response = await AuthService.Logout();
-            localStorage.removeItem('role');
-            navigate('/auth-page', { replace: true });
-
+            if (response) {
+                localStorage.removeItem('role');
+                navigate('/auth-page', { replace: true });
+            }
             window.location.reload();
         } catch (error) {
-            alert('Không thể đăng xuất');
+            alert(error);
         }
     };
     const handleLogin = () => {

@@ -5,7 +5,7 @@ class NhaTuyenDungService {
         this.api = createApiClient(baseUrl);
     }
     async getAll() {
-        return (await this.api.get('/')).data;
+        return (await this.api.get('/status')).data;
     }
     async create(data) {
         return (await this.api.post('/', data)).data;
@@ -21,6 +21,9 @@ class NhaTuyenDungService {
     }
     async delete(id) {
         return (await this.api.delete(`/${id}`)).data;
+    }
+    async getSuggested(id) {
+        return (await this.api.get(`goi-y/${id}`)).data;
     }
 }
 

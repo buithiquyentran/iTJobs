@@ -145,11 +145,10 @@ export default function ApplyForm({ infoToApply, onCancle }) {
             data = { ...data, MA_CV: selectedCV };
         } else {
             data = { ...data, CV_LINK: selectedCV };
-        }
+        } 
+
         // Thong bao
-
         let noidung = `${HO_TEN} đã ứng tuyển vào TTD "${TEN_TTD}" vào lúc ${moment().format('DD/MM/YYYY HH:mm:ss')} !`;
-
         const thongBaoInfo = { SDT: NTD_USERNAME, NOI_DUNG: noidung };
         console.log(thongBaoInfo);
 

@@ -87,7 +87,7 @@ const Recruitments = () => {
             .trim()
             .toLowerCase();
         });
-        console.log(employerStrings[15]);
+        // console.log(employerStrings[15]);
         setStrings(employerStrings);
       } catch (error) {
         console.log(error);
@@ -103,7 +103,7 @@ const Recruitments = () => {
   const filteredRecruiters = (status) => {
     if (!recruitments || recruitments.length === 0) return [];
     const filtered = recruitments.filter((r) => r.STATUS === status);
-    setRecruitmentTab(filtered);
+    // setRecruitmentTab(filtered);
     return filtered;
   };
 
@@ -229,8 +229,12 @@ const RecruiterTable = ({ filters }) => {
   };
 
   // Xử lý xóa tài khoản
-  const handleDelete = (id) => {
-    setRecruitments((prev) => prev.filter((r) => r.id !== id));
+  const handleDelete = async (MA_TTD, TEN_TTD) => {
+    const confirm = window.confirm(`Bạn muốn xóa tin tuyển dụng ${TEN_TTD}`);
+    if (confirm) {
+      setRecruitments((prev) => prev.filter((r) => r.MA_TTD !== MA_TTD));
+      return await tinTuyenDungService.delete(MA_TTD);
+    }
   };
 
   // Xử lý mở modal xem chi tiết
@@ -286,7 +290,10 @@ const RecruiterTable = ({ filters }) => {
                   </IconButton>
                   <IconButton
                     color="error"
-                    onClick={() => handleDelete(recruiter.id)}
+                   
+                    onClick={() =>
+                      handleDelete(recruiter.MA_TTD, recruiter.TEN_TTD)
+                    }
                   >
                     <Delete />
                   </IconButton>

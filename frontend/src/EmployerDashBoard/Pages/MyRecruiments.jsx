@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
+import moment from 'moment';
+
 import {
     Box,
     Typography,
@@ -31,10 +33,13 @@ import capBacService from '../services/capBac.service';
 import loaiHinhService from '../services/loaiHinh.service';
 import loaiHopDongService from '../services/loaiHopDong.service';
 import authService from '../services/auth.service';
-
+import followService from '../services/follow.service';
+import thongBaoService from '../services/thongBao.service';
 const MyRecruiments = () => {
     const [jobs, setJobs] = useState([]);
     const [MA_NTD, setMA_NTD] = useState(null);
+    const [user, setUser] = useState(null);
+
     const [open, setOpen] = useState(false);
     const [editingJob, setEditingJob] = useState({});
     const [statusFilter, setStatusFilter] = useState(2);
@@ -69,9 +74,10 @@ const MyRecruiments = () => {
                 const loaiHopDong = await loaiHopDongService.getAll();
                 setContracts(loaiHopDong);
                 // console.log(loaiHopDong);
-                const user = await authService.getUserInfo();
-                setMA_NTD(user?.MA_NTD);
-                const tinTuyenDung = await tinTuyenDungService.getByMA_NTD(user?.MA_NTD);
+                const userData = await authService.getUserInfo();
+                setUser(userData);
+                setMA_NTD(userData?.MA_NTD);
+                const tinTuyenDung = await tinTuyenDungService.getByMA_NTD(userData?.MA_NTD);
                 setJobs(
                     tinTuyenDung.map((item) => ({
                         ...item,
@@ -191,23 +197,54 @@ const MyRecruiments = () => {
             delete updatedJob.MUC_LUONG;
         }
         // Xử lý lưu:
-        if (updatedJob.MA_TTD) {
-            const response = await tinTuyenDungService.update(updatedJob.MA_TTD, updatedJob);
-            if (response) handleClose();
-        } else {
-            const response = await tinTuyenDungService.create(updatedJob);
-            if (response) handleClose();
+        try {
+            if (updatedJob.MA_TTD) {
+                const response = await tinTuyenDungService.update(updatedJob.MA_TTD, updatedJob);
+                if (response) {
+                    // Thong bao
+                    let noidung = `${user.TEN_NTD} chỉnh sửa tin tuyển dụng "${
+                        updatedJob.TEN_TTD
+                    }" vào lúc ${moment().format('DD/MM/YYYY HH:mm:ss')} !`;
+                    console.log(noidung);
+                    const followers = await followService.getByMA_NTD(user.MA_NTD);
+                    for (const follower of followers) {
+                        await thongBaoService.create({
+                            SDT: follower.NguoiLaoDong.SDT,
+                            NOI_DUNG: noidung,
+                        });
+                    }
+                    handleClose();
+                }
+            } else {
+                const response = await tinTuyenDungService.create(updatedJob);
+                if (response) {
+                    let noidung = `${user.TEN_NTD} đã thêm tin tuyển dụng mới"${
+                        updatedJob.TEN_TTD
+                    }" vào lúc ${moment().format('DD/MM/YYYY HH:mm:ss')} !`;
+                    console.log(noidung);
+                    const followers = await followService.getByMA_NTD(user.MA_NTD);
+                    for (const follower of followers) {
+                        await thongBaoService.create({
+                            MA_NLD: follower.MA_NLD,
+                            NOI_DUNG: noidung,
+                        });
+                    }
+                    handleClose();
+                }
+            }
+        } catch (error) {
+            alert('Lỗi khi tạo tin tuyển dụng. Vui long thử lại');
+            console.log(error);
         }
     };
 
-    // Xóa tin tuyển dụng
     // Xóa tin tuyển dụng
     const handleDelete = async (MA_TTD, TEN_TTD) => {
         try {
             const confirm = window.confirm(`Bạn muốn xóa tin tuyển dụng ${TEN_TTD}`);
 
             if (confirm) {
-                setJobs(jobs.filter((job) => job.MA_TTD !== MA_TTD));
+                setJobs(jobs.filter((job) => job.MA_TTD !== MA_TTD)); 
                 return await tinTuyenDungService.delete(MA_TTD);
             }
         } catch (error) {

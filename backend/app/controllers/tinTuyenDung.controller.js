@@ -1,4 +1,5 @@
 const { sequelize } = require("../config/db");
+const ApiError = require("../api-error");
 
 const TinTuyenDungService = require("../services/tinTuyenDung.service");
 exports.getAll = async (req, res) => {
@@ -10,6 +11,16 @@ exports.getAll = async (req, res) => {
     res.status(500).json({ message: "Error fetching data" });
   }
 };
+exports.getAllTrue = async (req, res) => {
+  try {
+    const response = await TinTuyenDungService.getAllTrue();
+    res.json(response);
+  } catch (error) {
+    console.error("Error fetching", error.message);
+    res.status(500).json({ message: "Error fetching data" });
+  }
+};
+;
 exports.getOne = async (req, res) => {
   try {
     const response = await TinTuyenDungService.findById(req.params.id);
@@ -72,42 +83,29 @@ exports.delete = async (req, res, next) => {
     return next(new ApiError(500, `Error deleting with id= ${req.params.id}`));
   }
 };
-
-// exports.getRecruitmentsByCompany = async (req, res) => {
-//   try {
-//     const { ma_ntd } = req.params;
-
-//     const recruitments = await TinTuyenDung.findAll({
-//       where: { MA_NTD: ma_ntd },
-//       include: [
-//         {
-//           model: TinTuyenDung,
-//           attributes: ["TEN_NTD", "LOGO"],
-//         },
-//         {
-//           model: KiNang,
-//           attributes: ["TEN_KN"],
-//           through: { attributes: [] },
-//         },
-//         {
-//           model: CapBac,
-//           attributes: ["TEN_CB"],
-//           through: { attributes: [] },
-//         },
-//         {
-//           model: LoaiHinh, // Lấy thông tin loại hình
-//           attributes: ["TEN_LOAI_HINH"],
-//         },
-//         {
-//           model: LoaiHopDong, // Lấy thông tin loại hợp đồng
-//           attributes: ["TEN_LOAI_HD"],
-//         },
-//       ],
-//     });
-
-//     res.status(200).json(recruitments);
-//   } catch (error) {
-//     console.error("Error fetching recruitment news by company:", error);
-//     res.status(500).json(error);
-//   }
-// };
+exports.goiY = async (req, res, next) => {
+  try {
+    const document = await TinTuyenDungService.goiY(req.params.MA_TTD);
+    if (!document) {
+      return next(new ApiError(404, "Enity not found"));
+    }
+    return res.send(document);
+  } catch (error) {
+    console.error(error);
+    return next(new ApiError(500, `Error deleting with id= ${req.params.id}`));
+  }
+};
+exports.goiYCaNhan = async (req, res, next) => {
+  try {
+    const document = await TinTuyenDungService.goiYCaNhan(req.params.MA_NLD);
+    if (!document) {
+      return next(new ApiError(404, "Enity not found"));
+    }
+    return res.send(document);
+  } catch (error) {
+    console.error(error);
+    return next(
+      new ApiError(500, `Error goi y ca nhan with ${req.params.MA_NLD}`)
+    );
+  }
+};

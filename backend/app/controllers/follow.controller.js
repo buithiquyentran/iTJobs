@@ -19,10 +19,21 @@ exports.getOne = async (req, res) => {
     res.status(500).json({ message: "Error fetching data" });
   }
 };
-exports.getByUsername = async (req, res) => {
+exports.getByMA_NLD = async (req, res) => {
   try {
     const { maNld } = req.params;
-    const response = await FollowService.findByUserName(maNld);
+    const response = await FollowService.findByMA_NLD(maNld);
+    res.json(response);
+  } catch (error) {
+    console.error("Error fetching", error.message);
+    res.status(500).json({ message: "Error fetching data" });
+  }
+};
+exports.getByMA_NTD = async (req, res) => {
+  try {
+    const { maNtd } = req.params;
+    console.log(maNtd);
+    const response = await FollowService.findByMA_NTD(maNtd);
     res.json(response);
   } catch (error) {
     console.error("Error fetching", error.message);

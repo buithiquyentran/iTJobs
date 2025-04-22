@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import LocationOnIcon from '@mui/icons-material/LocationOn'; // Icon địa điểm
 import AccessTimeIcon from '@mui/icons-material/AccessTime'; // Icon đồng hồ
@@ -28,17 +28,21 @@ import nhaTuyenDungService from '~/UserDashBoard/services/nhaTuyenDung.service';
 import ApplyForm from '~/UserDashBoard/Components/ApplyForm';
 import AuthService from '~/UserDashBoard/services/auth.service';
 import ungTuyenService from '~/UserDashBoard/services/ungTuyen.service';
+
+import JobSmall from '~/UserDashBoard/Components/Job/JobSmall';
+
 const JobDetailPage = () => {
     const { id } = useParams();
 
     const [job, setJob] = useState();
     const [jobs, setJobs] = useState([]);
+    const [suggestedJobs, setSuggestedJobs] = useState([]);
+
     const [company, setCompany] = useState();
     const [openDialog, setOpenDialog] = useState(false);
     const [user, setUser] = useState(null);
     const [infoToApply, setInfoToApply] = useState({});
     const [isApply, setIsApply] = useState(false);
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,6 +56,8 @@ const JobDetailPage = () => {
 
                 const response3 = await nhaTuyenDungService.get(response.MA_NTD);
                 setCompany(response3);
+                const response4 = await tinTuyenDungService.getSuggested(response.MA_TTD);
+                setSuggestedJobs(response4);
 
                 const userInfo = await AuthService.getUserInfo();
                 setUser(userInfo);
@@ -115,7 +121,12 @@ const JobDetailPage = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                         <Box
                             component="img"
-                            src={job?.NhaTuyenDung.LOGO}
+                            // src={job?.NhaTuyenDung.LOGO}
+                            src={
+                                job?.NhaTuyenDung.LOGO?.startsWith('/uploads/')
+                                    ? `http://localhost:5000${job?.NhaTuyenDung.LOGO}`
+                                    : job?.NhaTuyenDung.LOGO
+                            }
                             alt="Company Logo"
                             sx={{ width: 180, borderRadius: 1, mr: 2, height: 'max-content' }}
                         />
@@ -363,7 +374,7 @@ const JobDetailPage = () => {
                             ))}
                         </Box>
 
-                        {job?.QUI_TRINH_PV != 'Không xác định' && (
+                        {job?.QUI_TRINH_PV && (
                             <Box>
                                 <Typography variant="h6" fontWeight="bold" marginTop={2}>
                                     Qui trình phỏng vấn
@@ -375,6 +386,30 @@ const JobDetailPage = () => {
                                 </ul>
                             </Box>
                         )}
+                        {/* Việc làm phù hợp với bạn */}
+                        <Card sx={{ marginTop: 2 }}>
+                            <Typography
+                                sx={{ padding: 1, backgroundColor: '#ccd6d5', display: 'block', width: '100%' }}
+                                variant="h8"
+                                fontWeight="bold"
+                            >
+                                Các công việc tương tự
+                            </Typography>
+                            <Divider orientation="horizontal" flexItem />
+                            <Box sx={{ padding: 1, borderRadius: 2, paddingLeft: 0 }}>
+                                {suggestedJobs?.map((job, index) => {
+                                    if (index !== 0) {
+                                        return (
+                                            <>
+                                                <Divider orientation="hertical" flexItem />
+                                                <JobSmall job={job} applying={true} />
+                                            </>
+                                        );
+                                    }
+                                    return <JobSmall job={job} applying={true} />;
+                                })}
+                            </Box>
+                        </Card>
                     </CardContent>
                 </Card>
             </Box>

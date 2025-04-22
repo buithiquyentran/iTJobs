@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
     Box,
     Typography,
@@ -17,16 +16,14 @@ import {
 import LocationOnIcon from '@mui/icons-material/LocationOn'; // Icon địa điểm
 import { useParams } from 'react-router-dom';
 import Job from '~/UserDashBoard/Components/Job/Job';
+import CompanySmall from '~/UserDashBoard/Components/Company/CompanySmall';
 import nhaTuyenDungService from '~/UserDashBoard/services/nhaTuyenDung.service';
 import tinTuyenDungService from '~/UserDashBoard/services/tinTuyenDung.service';
-
 const CompanyDetails = () => {
     const { id } = useParams();
-    // console.log('id ', id);
     const [company, setCompany] = useState(null);
-    // const [linhVuc, setLinhVuc] = useState([]);
-    // const [kiNang, setKiNang] = useState([]);
     const [jobs, setJobs] = useState(null);
+    const [suggestedCPNs, setSuggestedCPNs] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,6 +34,9 @@ const CompanyDetails = () => {
                 // console.log(jobs);
                 const filterjobs = jobs.filter((job) => job.MA_NTD == id);
                 setJobs(filterjobs);
+
+                const response1 = await nhaTuyenDungService.getSuggested(response.MA_NTD);
+                setSuggestedCPNs(response1);
             } catch (error) {
                 console.error('Error fetching data ', error);
             }
@@ -64,13 +64,23 @@ const CompanyDetails = () => {
                     sx={{
                         height: 400,
                         width: '100%',
-                        backgroundImage: company?.IMG
-                            ? `url(${company.IMG})`
-                            : 'url("https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg")',
+                        // backgroundImage: company?.IMG
+                        //     ? company.IMG.startsWith('/uploads/')
+                        //         ? `http://localhost:5000${company?.IMG}`
+                        //         : `url(${company.IMG})`
+                        //     : 'url("https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg")',
+
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         borderRadius: '8px',
                     }}
+                    image={
+                        company?.IMG
+                            ? company?.IMG?.startsWith('/uploads/')
+                                ? `http://localhost:5000${company.IMG}`
+                                : company?.IMG
+                            : 'https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg'
+                    }
                 />
                 <Box sx={{ padding: 2, display: 'flex' }}>
                     <Card
@@ -87,7 +97,19 @@ const CompanyDetails = () => {
                             {company?.LOGO ? (
                                 <CardMedia
                                     component="img"
-                                    src={company.LOGO}
+                                    // src={company.LOGO}
+                                    // src={
+                                    //     company.LOGO?.startsWith('/uploads/')
+                                    //         ? `http://localhost:5000${company.LOGO}`
+                                    //         : company.LOGO
+                                    // }
+                                    image={
+                                        company?.LOGO
+                                            ? company?.LOGO?.startsWith('/uploads/')
+                                                ? `http://localhost:5000${company.LOGO}`
+                                                : company?.LOGO
+                                            : 'https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg'
+                                    }
                                     alt="Company Logo"
                                     sx={{
                                         width: 180,
@@ -260,6 +282,30 @@ const CompanyDetails = () => {
                         </Typography>
                     </Card>
                 </Box>
+                {/* Việc làm phù hợp với bạn */}
+                <Card sx={{ marginTop: 2 }}>
+                    <Typography
+                        sx={{ padding: 1, backgroundColor: '#ccd6d5', display: 'block', width: '100%' }}
+                        variant="h8"
+                        fontWeight="bold"
+                    >
+                        Các công ty tương tự
+                    </Typography>
+                    <Divider orientation="horizontal" flexItem />
+                    <Box sx={{ padding: 1, borderRadius: 2, paddingLeft: 0 }}>
+                        {suggestedCPNs?.map((job, index) => {
+                            if (index !== 0) {
+                                return (
+                                    <>
+                                        <Divider orientation="hertical" flexItem />
+                                        <CompanySmall company={job} />
+                                    </>
+                                );
+                            }
+                            return <CompanySmall company={job} />;
+                        })}
+                    </Box>
+                </Card>
             </Box>
         </Box>
     );

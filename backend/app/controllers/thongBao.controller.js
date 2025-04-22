@@ -56,7 +56,7 @@ exports.create = async (req, res, next) => {
     return res.send({ message: "Enity was created successfully", document });
   } catch (error) {
     console.error(error);
-    return next(new ApiError(500, `Error creating with id= ${req.params.id}`));
+    // return next(new ApiError(500, `Error creating with id= ${req.params.id}`));
   }
 };
 exports.delete = async (req, res, next) => {

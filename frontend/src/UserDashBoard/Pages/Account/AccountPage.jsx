@@ -16,12 +16,16 @@ import {
     Select,
     FormControl,
     InputLabel,
-   
+    Divider,
 } from '@mui/material';
+import JobSmall from '~/UserDashBoard/Components/Job/JobSmall';
+
 import capBacService from '~/UserDashBoard/services/capBac.service';
 import kiNangService from '~/UserDashBoard/services/kiNang.service';
 import AuthService from '~/UserDashBoard/services/auth.service';
 import NguoiLaoDongService from '~/UserDashBoard/services/nguoiLaoDong.service';
+import tinTuyenDungService from '~/UserDashBoard/services/tinTuyenDung.service';
+
 const AccountPage = () => {
     const [profile, setProfile] = useState({
         MA_NLD: '',
@@ -38,6 +42,7 @@ const AccountPage = () => {
     const [skills, setSkills] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [selectedLevels, setSelectedLevels] = useState([]);
+    const [suggestedJobs, setSuggestedJobs] = useState([]);
 
     useEffect(() => {
         try {
@@ -63,6 +68,8 @@ const AccountPage = () => {
                 });
                 setSelectedSkills(response.KiNangs?.map((item) => item.MA_KN) || []);
                 setSelectedLevels(response.CapBacs?.map((item) => item.MA_CB) || []);
+                const response5 = await tinTuyenDungService.getSuggestedCaNhan(user.MA_NLD);
+                setSuggestedJobs(response5);
             };
             fetchData();
         } catch (error) {
@@ -93,9 +100,10 @@ const AccountPage = () => {
         setSelectedLevels(event.target.value);
         setProfile({ ...profile, MA_CB: event.target.value });
     };
+
     return (
-        <Box sx={{ maxWidth: '1000px', padding: 0 }} className="setting-page" maxWidth="sm">
-            <Card>
+        <Box sx={{ width: '100%', padding: 0, display: 'flex', justifyContent: 'space-between' }}>
+            <Card sx={{ maxWidth: '1000px', padding: 0 }} className="setting-page" maxWidth="sm">
                 <CardContent sx={{ padding: 3 }}>
                     <h2>Chỉnh sửa thông tin cá nhân</h2>
                     <form onSubmit={handleSubmit}>
@@ -245,6 +253,36 @@ const AccountPage = () => {
                         </Button>
                     </form>
                 </CardContent>
+            </Card>
+            {/* Việc làm phù hợp với bạn */}
+            <Card sx={{marginLeft: 3}}>
+                <Typography
+                    sx={{
+                        padding: 1,
+                        backgroundColor: '#ccd6d5',
+                        display: 'block',
+                        width: '100%',
+                        marginTop: 2,
+                    }}
+                    variant="h8"
+                    fontWeight="bold"
+                >
+                    Việc làm phù hợp với bạn
+                </Typography>
+                <Divider orientation="horizontal" flexItem />
+                <Box sx={{ padding: 1, borderRadius: 2, paddingLeft: 0 }}>
+                    {suggestedJobs?.map((job, index) => {
+                        if (index !== 0) {
+                            return (
+                                <>
+                                    <Divider orientation="hertical" flexItem />
+                                    <JobSmall job={job} applying={true} />
+                                </>
+                            );
+                        }
+                        return <JobSmall job={job} applying={true} />;
+                    })}
+                </Box>
             </Card>
         </Box>
     );

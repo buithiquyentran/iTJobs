@@ -29,7 +29,7 @@ class AuthService {
           replacements: { SDT, MK, TEN_NTD, EMAIL, MST, DIA_CHI, Linh_Vuc },
         }
       );
-      return user.message;
+      return user;
     } catch (error) {
       throw new Error("Lỗi khi đăng ký nhà tuyển dụng: " + error.message);
     }
@@ -74,7 +74,9 @@ class AuthService {
   }
   async findBySDT(SDT) {
     return await User.findOne({
-      SDT: SDT,
+      where: {
+        SDT: SDT,
+      },
     });
   }
 }

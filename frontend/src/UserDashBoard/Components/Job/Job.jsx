@@ -48,7 +48,12 @@ const Job = ({ job, saveJobs, username, onToggleSave }) => {
                     {/* Logo */}
                     <Box
                         component="img"
-                        src={job.NhaTuyenDung.LOGO}
+                        // src={job.NhaTuyenDung.LOGO}
+                        src={
+                            job.NhaTuyenDung.LOGO?.startsWith('/uploads/')
+                                ? `http://localhost:5000${job.NhaTuyenDung.LOGO}`
+                                : job.NhaTuyenDung.LOGO
+                        }
                         alt="Company Logo"
                         sx={{ width: 180, borderRadius: 1, mr: 2 }}
                     />

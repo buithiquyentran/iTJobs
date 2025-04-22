@@ -126,8 +126,39 @@ const RegisterEmployer = ({ switchToLogin }) => {
             setError((prev) => ({ ...prev, EMAIL: 'Vui lòng nhập email' }));
             return;
         }
+        // try {
+        //     const { SDT, MK, TEN_NTD, EMAIL, MST, DIA_CHI, Linh_Vuc } = formData;
+        //     const response = await axios.post(
+        //         'http://localhost:5000/api/auth-page/register-employer',
+        //         {
+        //             SDT,
+        //             MK,
+        //             TEN_NTD,
+        //             EMAIL,
+        //             MST,
+        //             DIA_CHI,
+        //             Linh_Vuc,
+        //         },
+        //         { withCredentials: true },
+        //     );
+        //     console.log(response.data.user);
+        //     if (response.data.user.SDT) {
+        //         localStorage.setItem('role', response.data.user.MA_ROLE);
+        //         alert('Đăng ký thành công!');
+        //         navigate('/', { replace: true });
+        //         window.location.reload();
+        //     } else {
+        //         setError(response.data.error);
+        //         console.log(response.data.error);
+        //         alert(response.data.error);
+        //         return;
+        //     }
+        // } catch (error) {
+        //     console.error('Errror register ', error);
+        // }
         try {
             const { SDT, MK, TEN_NTD, EMAIL, MST, DIA_CHI, Linh_Vuc } = formData;
+
             const response = await axios.post(
                 'http://localhost:5000/api/auth-page/register-employer',
                 {
@@ -141,22 +172,27 @@ const RegisterEmployer = ({ switchToLogin }) => {
                 },
                 { withCredentials: true },
             );
-            if (response.data.user.SDT) {
-                alert('Đăng ký thành công!');
+
+            const user = response.data.user;
+
+            if (user && user.SDT) {
+                // localStorage.setItem('role', user.MA_ROLE);
+                alert('Đăng ký thành công! Vui lòng chờ được duyệt');
+                // navigate('/', { replace: true });
+                window.location.reload();
             } else {
-                alert(response.data.user);
+                alert(response.data.error || 'Có lỗi xảy ra');
             }
-            // if (response.data.user) {
-            //     localStorage.setItem('role', response.data.user.MA_ROLE);
-            //     alert('Đăng ký thành công!');
-            //     navigate('/', { replace: true });
-            //     window.location.reload();
-            // } else {
-            //     setError(response.data.error);
-            //     console.log(response.data.error);
-            // }
         } catch (error) {
-            console.error('Errror register ', error);
+            // Nếu lỗi trả về từ server có phản hồi
+            if (error.response && error.response.data) {
+                alert(error.response.data.error || 'Đăng ký thất bại!');
+                console.error('Server Error:', error.response.data);
+            }
+            //  else {
+            //     alert('Không thể kết nối tới server!');
+            //     console.error('Client Error:', error.message);
+            // }
         }
     };
     return (

@@ -13,12 +13,15 @@ class FollowService {
     // async deleteAll() {
     //     return (await this.api.delete('/')).data;
     // }
-    async get(maNld, maNtd) { 
+    async get(maNld, maNtd) {
         return (await this.api.get(`/${maNld}/${maNtd}`)).data;
     }
-    async getByUsername(maNld) { 
-        return (await this.api.get(`/${maNld}`)).data;
-    } 
+    async getByMA_NLD(maNld) {
+        return (await this.api.get(`/ma-nld/${maNld}`)).data;
+    }
+    async getByMA_NTD(maNtd) {
+        return (await this.api.get(`/ma-ntd/${maNtd}`)).data;
+    }
     // async update(id, data) {
     //     return (await this.api.put(`/${id}`, data)).data;
     // }

@@ -50,7 +50,9 @@ const Company = ({ company, followedCompanies, MA_NLD, onToggle }) => {
                     height="100%"
                     image={
                         company?.IMG
-                            ? company?.IMG
+                            ? company?.IMG?.startsWith('/uploads/')
+                                ? `http://localhost:5000${company.IMG}`
+                                : company?.IMG
                             : 'https://salt.topdev.vn/MR1Y_GUMkKRo91V8JpXGjJq1ZkY8rIhxfxBdl5g1nN4/auto/310/250/ce/1/aHR0cHM6Ly90b3BkZXYudm4vYXNzZXRzL2Rlc2t0b3AvaW1hZ2VzL2NvbXBhbnktc2NlbmUtMy5wbmc/company-scene-3.jpg'
                     }
                     alt="Job banner"

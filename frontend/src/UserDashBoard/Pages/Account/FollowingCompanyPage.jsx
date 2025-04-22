@@ -34,7 +34,7 @@ const FollowingCompanyPage = () => {
                 const response = await AuthService.getUserInfo();
                 // setUser(response);
                 setMA_NLD(response.MA_NLD);
-                const follow = await FollowService.getByUsername(response.MA_NLD);
+                const follow = await FollowService.getByMA_NLD(response.MA_NLD);
                 const companies = await Promise.all(
                     follow.map(async (item) => {
                         return await NhaTuyenDungService.get(item.MA_NTD);
@@ -46,7 +46,7 @@ const FollowingCompanyPage = () => {
             fetchData();
         } catch (error) {
             console.log(error);
-        } 
+        }
     }, []);
     const handleToggle = (jobId) => {
         setFollowedCompanies((prev) => (prev.includes(jobId) ? prev.filter((id) => id !== jobId) : [...prev, jobId]));
@@ -56,13 +56,13 @@ const FollowingCompanyPage = () => {
             <h2>Công ty đang theo dõi</h2>
             <Grid container spacing={1} sx={{ padding: 1, borderRadius: 2, paddingLeft: 0 }}>
                 {companies?.map((company, index) => (
-                    <Grid item xs={12} sm={6} key={index}> 
+                    <Grid item xs={12} sm={6} key={index}>
                         <Box sx={{ position: 'relative', paddingTop: 2 }}>
                             <CompanySmall
                                 company={company}
                                 followedCompanies={followedCompanies}
                                 MA_NLD={MA_NLD}
-                                onToggle={handleToggle} 
+                                onToggle={handleToggle}
                             />
                         </Box>
                     </Grid>

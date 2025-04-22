@@ -10,10 +10,19 @@ exports.getAll = async (req, res) => {
     res.status(500).json({ message: "Error fetching data" });
   }
 };
+exports.getAllStatus = async (req, res) => {
+  try {
+    const response = await NhaTuyenDungService.getAllStatus();
+    res.json(response);
+  } catch (error) {
+    console.error("Error fetching", error.message);
+    res.status(500).json({ message: "Error fetching data" });
+  }
+};
 exports.getOne = async (req, res) => {
   try {
     const response = await NhaTuyenDungService.findById(req.params.id);
-    res.json(response); 
+    res.json(response);
   } catch (error) {
     console.error("Error fetching", error.message);
     res.status(500).json({ message: "Error fetching data" });
@@ -58,6 +67,18 @@ exports.delete = async (req, res, next) => {
       return next(new ApiError(404, "Enity not found"));
     }
     return res.send({ message: "Enity was deleted successfully", document });
+  } catch (error) {
+    console.error(error);
+    // return next(new ApiError(500, `Error deleting with id= ${req.params.id}`));
+  }
+};
+exports.goiY = async (req, res, next) => {
+  try {
+    const document = await NhaTuyenDungService.goiY(req.params.MA_NTD);
+    if (!document) {
+      return next(new ApiError(404, "Enity not found"));
+    }
+    return res.send(document);
   } catch (error) {
     console.error(error);
     // return next(new ApiError(500, `Error deleting with id= ${req.params.id}`));

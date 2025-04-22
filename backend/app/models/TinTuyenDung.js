@@ -23,7 +23,11 @@ const TinTuyenDung = sequelize.define(
     PHUC_LOI: { type: DataTypes.JSON, allowNull: true },
     QUI_TRINH_PV: { type: DataTypes.JSON, allowNull: true },
     LINK: { type: DataTypes.STRING, allowNull: true },
-    STATUS: { type: DataTypes.INTEGER, allowNull: true },
+    STATUS: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+    },
     MA_NTD: {
       type: DataTypes.INTEGER,
       allowNull: false,

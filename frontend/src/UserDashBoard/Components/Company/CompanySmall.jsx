@@ -53,30 +53,37 @@ const CompanySmall = ({ company, followedCompanies, MA_NLD, onToggle }) => {
                     {/* Logo */}
                     <Box
                         component="img"
-                        src={company.LOGO}
+                        // src={company.LOGO}
+                        src={
+                            company?.LOGO?.startsWith('/uploads/')
+                                ? `http://localhost:5000${company.LOGO}`
+                                : company?.LOGO
+                        }
                         alt="Company Logo"
                         sx={{ width: 112, borderRadius: 1, mr: 2 }}
                     />
-                    <Tooltip
-                        sx={{
-                            position: 'absolute',
-                            right: 0,
-                            top: '16px',
-                            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-                            background: '#fff',
-                            borderRadius: 0,
-                            borderTopRightRadius: 2,
-                            padding: '8px',
-                            '&:hover': {
+                    {followedCompanies && (
+                        <Tooltip
+                            sx={{
+                                position: 'absolute',
+                                right: 0,
+                                top: '16px',
+                                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                                 background: '#fff',
-                            },
-                        }}
-                        title={followed ? 'Bỏ theo dõi' : 'Theo dõi'}
-                    >
-                        <IconButton onClick={toggleBookmark} color="error" size="large">
-                            {followed ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-                        </IconButton>
-                    </Tooltip>
+                                borderRadius: 0,
+                                borderTopRightRadius: 2,
+                                padding: '8px',
+                                '&:hover': {
+                                    background: '#fff',
+                                },
+                            }}
+                            title={followed ? 'Bỏ theo dõi' : 'Theo dõi'}
+                        >
+                            <IconButton onClick={toggleBookmark} color="error" size="large">
+                                {followed ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                            </IconButton>
+                        </Tooltip>
+                    )}
                     {/* CompanySmall Title & Company Name */}
                     <Box>
                         <Box alignItems="center">

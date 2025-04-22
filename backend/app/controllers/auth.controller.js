@@ -5,26 +5,60 @@ const NguoiLaoDongService = require("../services/nguoiLaoDong.service");
 const NhaTuyenDungService = require("../services/nhaTuyenDung.service");
 
 // Đăng ký nhà tuyển dụng
+// exports.registerEmployer = async (req, res) => {
+//   try {
+//     const user = await AuthService.registerEmployer(req.body);
+//     const token = AuthService.generateToken(user);
+
+//     res.cookie("jwt", token, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",
+//       maxAge: 60 * 60 * 1000 * 24 * 7, // 1 giờ
+//     });
+
+//     res.status(200).json({
+//       message: user.SDT ? "Register successfully" : "Register fail",
+//       user,
+//       token,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Lỗi server", error: error.message });
+//   }
+// };
 exports.registerEmployer = async (req, res) => {
   try {
     const user = await AuthService.registerEmployer(req.body);
+
+    // Nếu registerEmployer trả về lỗi (dưới dạng object có message)
+    if (user?.message) {
+      return res.status(400).json({
+        message: "Tạo tài khoản thất bại",
+        error: user.message,
+      });
+    }
+
     const token = AuthService.generateToken(user);
 
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 1000 * 24 * 7, // 1 giờ
+      maxAge: 60 * 60 * 1000 * 24 * 7, // 7 ngày
     });
 
     res.status(200).json({
-      message: user.SDT ? "Register successfully" : "Register fail",
+      message: "Register successfully",
       user,
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Lỗi server", error: error.message });
+    console.error("Lỗi registerEmployer:", error);
+    res.status(500).json({
+      message: "Lỗi server",
+      error: error.message,
+    });
   }
 };
+
 
 // Đăng ký người lao động
 exports.registerEmployee = async (req, res) => {
@@ -52,6 +86,7 @@ exports.registerEmployee = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const user = await AuthService.login(req.body);
+    
     const token = AuthService.generateToken(user);
 
     res.cookie("jwt", token, {

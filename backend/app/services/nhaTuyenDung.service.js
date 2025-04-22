@@ -7,10 +7,34 @@ const {
   User,
 } = require("../models");
 const { sequelize } = require("../config/db");
+const { Op } = require("sequelize");
 
 class NhaTuyenDungService {
   // Lấy tất cả
   async getAll() {
+    try {
+      return await NhaTuyenDung.findAll({
+        // where: { APPROVAL_STATUS: "approved" },
+        include: [
+          {
+            model: LinhVuc,
+            attributes: ["MA_LV", "TEN_LV"],
+          },
+          {
+            model: KiNang,
+            attributes: ["MA_KN", "TEN_KN"],
+          },
+          {
+            model: User,
+            // attributes: ["MA_KN", "TEN_KN"],
+          },
+        ],
+      });
+    } catch (error) {
+      throw new Error("Lỗi khi lấy dữ liệu: " + error.message);
+    }
+  }
+  async getAllStatus() {
     try {
       return await NhaTuyenDung.findAll({
         include: [
@@ -25,6 +49,9 @@ class NhaTuyenDungService {
           {
             model: User,
             // attributes: ["MA_KN", "TEN_KN"],
+            where: {
+              APPROVAL_STATUS: "approved", // Đặt đúng ở đây
+            },
           },
         ],
       });
@@ -152,6 +179,90 @@ class NhaTuyenDungService {
         },
       ],
     });
+  }
+
+  async goiY(MA_NTD) {
+    try {
+      // 1. Lấy tin tuyển dụng gốc
+      const ntdGoc = await NhaTuyenDung.findByPk(MA_NTD, {
+        include: [LinhVuc, KiNang],
+      });
+
+      if (!ntdGoc) return null;
+
+      const linhVucGoc = ntdGoc.LinhVucs.map((cb) => cb.MA_LV);
+      const kiNangGoc = ntdGoc.KiNangs.map((kn) => kn.MA_KN);
+      const diaChiGoc = ntdGoc.DIA_CHI?.toLowerCase() || "";
+      const diaChiCuTheGoc = (ntdGoc.DIA_CHI_CU_THE || []).map((s) =>
+        s.toLowerCase()
+      );
+
+      // 2. Lấy các tin tuyển dụng khác
+      const allNtd = await NhaTuyenDung.findAll({
+        where: {
+          MA_NTD: { [Op.ne]: MA_NTD }, // loại trừ chính tin gốc
+        },
+        // include: [CapBac, KiNang],
+        attributes: ["MA_NTD", "TEN_NTD", "DIA_CHI", "LOGAN", "LOGO"],
+        include: [
+          {
+            model: LinhVuc,
+            attributes: ["MA_LV", "TEN_LV"],
+            through: { attributes: [] },
+          },
+          {
+            model: KiNang,
+            attributes: ["MA_KN", "TEN_KN"],
+            through: { attributes: [] },
+          },
+        ],
+      });
+
+      // 3. Tính điểm tương đồng
+      const tinDiem = allNtd.map((tin) => {
+        const linhVucKhac = tin.LinhVucs.map((cb) => cb.MA_LV);
+        const kiNangKhac = tin.KiNangs.map((kn) => kn.MA_KN);
+        const diaChiKhac = tin.DIA_CHI?.toLowerCase() || "";
+        const diaChiCuTheKhac = (tin.DIA_CHI_CU_THE || []).map((s) =>
+          s.toLowerCase()
+        );
+
+        let diem = 0;
+
+        // So sánh cấp bậc
+        if (linhVucKhac.some((id) => linhVucGoc.includes(id))) diem += 1;
+
+        // So sánh kỹ năng
+        kiNangKhac.forEach((id) => {
+          if (kiNangGoc.includes(id)) diem += 1;
+        });
+
+        // So sánh địa chỉ (gần giống)
+        if (
+          diaChiGoc &&
+          diaChiKhac &&
+          (diaChiKhac.includes(diaChiGoc) || diaChiGoc.includes(diaChiKhac))
+        ) {
+          diem += 1;
+        }
+
+        // So sánh địa chỉ cụ thể (từng thành phần mảng)
+        const giongCuThe = diaChiCuTheKhac.some((part) =>
+          diaChiCuTheGoc.includes(part)
+        );
+        if (giongCuThe) diem += 1;
+
+        return { ...tin.toJSON(), diem };
+      });
+
+      // 4. Sắp xếp theo điểm, lấy top 4
+      tinDiem.sort((a, b) => b.diem - a.diem);
+
+      return tinDiem.slice(0, 4);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 }
 

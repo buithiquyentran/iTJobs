@@ -99,6 +99,11 @@ function Companies() {
                         className="search-input"
                         onChange={handleChange}
                         value={keyword}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSearch(); // Gọi hàm tìm kiếm
+                            }
+                        }}
                     />
                     <CustomFilterDropdown
                         onChange={handleFilterChange}

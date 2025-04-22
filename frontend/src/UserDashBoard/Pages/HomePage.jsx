@@ -1,7 +1,10 @@
 import React from 'react';
 import { Box, Typography, Button, Container, Grid, Card, CardContent, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
+    const navigate = useNavigate();
+
     return (
         <Box sx={{ mt: 0 }}>
             {/* Hero Section */}
@@ -9,12 +12,11 @@ const HomePage = () => {
                 sx={{
                     // backgroundColor: '#004d40',
                     color: 'white',
-                    height: '800px',
-                    py: 8,
+                    height: '500px',
                     textAlign: 'center',
                     backgroundImage: 'url("/banner.png")',
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'repeat',
                 }}
             >
                 <Container maxWidth="md">
@@ -24,7 +26,14 @@ const HomePage = () => {
                     <Typography variant="h6" paragraph>
                         Nền tảng tìm kiếm việc làm và quản lý CV thông minh dành riêng cho ngành CNTT
                     </Typography> */}
-                    <Button variant="contained" color="secondary" size="large" sx={{ mt: 3 }}>
+
+                    <Button
+                        onClick={() => navigate(`/jobs`)}
+                        variant="contained"
+                        color="secondary"
+                        size="large"
+                        sx={{ mt: 3 }}
+                    >
                         Tìm Việc Ngay
                     </Button>
                 </Container>
