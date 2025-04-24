@@ -47,11 +47,9 @@ backup.mysql/ (dạng Dump Project Folder) bao gồm tất cả: bảng, dữ li
 
 - Vào menu Server > Data Import
 
-- Chọn Import from Dump Project Folder
+- Chọn Import from Seft-Contained File
 
 - Chọn đường dẫn tới thư mục database/backup.mysql
-
-- Chọn schema muốn import hoặc tạo mới
 
 Nhấn Start Import
 
